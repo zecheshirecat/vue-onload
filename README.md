@@ -24,8 +24,7 @@ You can pass an optional object for default class names
 Vue.use(OnLoad, { classLoading: 'img-loading', classLoaded: 'img-loaded' })
 ```
 
-Use the instance methods 'this.$images.preload' in your Vue script to preload an array of image sources
-NOTE: All resources must be located in your 'src/assets/img/'
+Use the instance methods 'this.$images.preload' in your Vue script to preload an array of image sources.
 
 ```javascript
 ...
@@ -63,10 +62,14 @@ Which will be transformed once the resource has been loaded into:
 ```
 <template>
   <div>
-    <img alt="My Image" class="img" src="/static/img/my-image-01.jpg">
+    <img alt="My Image" class="img loaded" src="/static/img/my-image-01.jpg" width="1024" height="768">
   </div>
 </template>
 ```
+
+## Important Note
+
+All resources must be located in your 'src/assets/img/'. I am working on a new option to customize the default resource folder.
 
 ## License
 
