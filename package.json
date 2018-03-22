@@ -1,0 +1,24 @@
+{
+  "name": "vue-onload",
+  "version": "0.1.0",
+  "description": "A lightweight image loader plugin for Vue.js",
+  "main": "index.js",
+  "devDependencies": {
+    "vue": "2.5.0"
+  },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "image",
+    "loader",
+    "preload",
+    "js",
+    "javascript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ch3sh1r3Cat/vue-onload.git"
+  },
+  "author": "cheshirecat <ca.leduc@me.com>",
+  "license": "MIT"
+}
