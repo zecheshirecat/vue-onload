@@ -21,8 +21,6 @@ Vue.use(OnLoad)
 You can pass an optional object for default class names
 
 ```javascript
-import OnLoad from 'vue-onload'
-
 Vue.use(OnLoad, { classLoading: 'img-loading', classLoaded: 'img-loaded' })
 ```
 
