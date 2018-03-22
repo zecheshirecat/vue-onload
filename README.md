@@ -47,7 +47,7 @@ mounted: function() {
 ...
 ```
 
-You can use the filter 'onload' in your HTML template
+You can use the directive 'v-onload' in your HTML template
 
 ```
 <template>
@@ -69,7 +69,7 @@ Which will be transformed once the resource has been loaded into:
 
 ## Important Note
 
-All resources must be located in your 'src/assets/img/'. I am working on a new option to customize the default resource folder.
+All resources must be located in your src/assets/img/. I am working on a new option to customize the default resource folder.
 
 ## License
 
