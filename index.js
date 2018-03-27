@@ -37,24 +37,34 @@ const OnLoad = {
       }
     }
 
+    const directiveFn = function(el, binding) {
+      const name = binding.value
+      var source = _images[name]
+      if (source != null) {
+        imgFn.set(source, el)
+      } else {
+        el.classList.toggle(classLoading, true)
+        el.classList.toggle(classLoaded, false)
+        imgFn.load(name, img => {
+          imgFn.set(img, el)
+        })
+      }
+    }
+
     Vue.directive('onload', {
       inserted: function(el, binding, vnode) {
         if (vnode.tag !== 'img') {
           console.warn('Current node is not an image!')
           return
         }
-
-        const name = binding.value
-        var source = _images[name]
-        if (source != null) {
-          imgFn.set(source, el)
-        } else {
-          el.classList.toggle(classLoading, true)
-          el.classList.toggle(classLoaded, false)
-          imgFn.load(name, img => {
-            imgFn.set(img, el)
-          })
+        directiveFn(el, binding)
+      },
+      update: function(el, binding, vnode, oldVnode) {
+        if (vnode.tag !== 'img') {
+          console.warn('Current node is not an image!')
+          return
         }
+        directiveFn(el, binding)
       }
     })
 
