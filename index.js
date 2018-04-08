@@ -45,7 +45,7 @@ const OnLoad = {
       } else {
         el.classList.toggle(classLoading, true)
         el.classList.toggle(classLoaded, false)
-        imgFn.load(name, img => {
+        imgFn.load(name, function(img) {
           imgFn.set(img, el)
         })
       }
@@ -74,7 +74,7 @@ const OnLoad = {
         var n = 0
         for (var i in images) {
           const name = images[i]
-          imgFn.load(name, img => {
+          imgFn.load(name, function(img) {
             n++
             _images[name] = img
             if (n >= l) {
