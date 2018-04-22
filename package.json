@@ -1,6 +1,6 @@
 {
   "name": "vue-onload",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A lightweight image loader plugin for Vue.js",
   "main": "index.js",
   "scripts": {
@@ -9,8 +9,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "vue": "2.5.0"
+    "babel-preset-stage-2": "^6.24.1"
   },
   "keywords": [
     "vue",
@@ -26,5 +25,5 @@
     "url": "https://github.com/Ch3sh1r3Cat/vue-onload.git"
   },
   "author": "cheshirecat <ca.leduc@me.com>",
-  "license": "MIT"
+  "license": "ISC"
 }

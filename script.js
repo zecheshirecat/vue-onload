@@ -1,9 +1,13 @@
 /**
- * @license
- * Copyright (c) 2018 Charles-André LEDUC. All rights reserved.
+ * A lightweight image loader plugin for Vue.js
+ *
+ * @version 0.1.5
+ * @author Charlie LEDUC <contact@graphique.io>
+ * @license ISC
+ * @requires 'vue'
  */
 
-const OnLoad = {
+export default {
   install(Vue, options) {
     var _images = {}
     var classLoading = 'loading'
@@ -88,5 +92,3 @@ const OnLoad = {
     }
   }
 }
-
-export default OnLoad

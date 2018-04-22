@@ -73,4 +73,4 @@ All resources must be located in your src/assets/img/. I am working on a new opt
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT)
+[ISC](https://opensource.org/licenses/ISC)
