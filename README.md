@@ -33,8 +33,9 @@ mounted: function() {
     this.$nextTick(function() {
       this.$images.preload(
         [
-          'my-image-01.jpg',
-          'my-image-02.jpg',
+          '/static/images/my-image-01.jpg',
+          '/static/images/my-image-02.jpg',
+          require('@/assets/images/my-image-02.jpg'),
           ...
         ],
         () => {
@@ -52,7 +53,7 @@ You can use the directive 'v-onload' in your HTML template
 ```
 <template>
   <div>
-    <img alt="My Image" class="img" v-onload="my-image-01.jpg">
+    <img alt="My Image" class="img" v-onload="/static/images/my-image-01.jpg">
   </div>
 </template>
 ```
@@ -62,14 +63,10 @@ Which will be transformed once the resource has been loaded into:
 ```
 <template>
   <div>
-    <img alt="My Image" class="img loaded" src="/static/img/my-image-01.jpg" width="1024" height="768">
+    <img alt="My Image" class="img loaded" width="1024" height="768" src="/static/images/my-image-01.jpg">
   </div>
 </template>
 ```
-
-## Important Note
-
-All resources must be located in your src/assets/img/. I am working on a new option to customize the default resource folder.
 
 ## License
 

@@ -1,7 +1,7 @@
 /**
  * A lightweight image loader plugin for Vue.js
  *
- * @version 0.1.5
+ * @version 0.1.6
  * @author Charlie LEDUC <contact@graphique.io>
  * @license ISC
  * @requires 'vue'
@@ -9,7 +9,7 @@
 
 export default {
   install(Vue, options) {
-    var _images = {}
+    var _images = []
     var classLoading = 'loading'
     var classLoaded = 'loaded'
     if (options) {
@@ -17,19 +17,32 @@ export default {
       if (options.classLoaded) classLoaded = options.classLoaded
     }
 
+    const findImageFn = function(src) {
+      if (src && _images.length > 0) {
+        for (let _image of _images) {
+          if (_image.src && _image.src === src) {
+            return _image
+          }
+        }
+      }
+      return false
+    }
+
     const imgFn = {
-      load: function(filename, callback) {
-        const _img = new Image()
+      load: function(resource, callback) {
+        var _img = new Image()
         _img.onload = function() {
           _img.width = this.width
           _img.height = this.height
-          _images[filename] = _img
+          if (findImageFn(_img.src) === false) {
+            _images.push(_img)
+          }
           if (callback) {
             callback(_img)
           }
         }
-        _img.alt = filename
-        _img.src = require('@/assets/img/' + filename)
+        _img.alt = ''
+        _img.src = resource
       },
 
       set: function(source, target) {
@@ -42,16 +55,16 @@ export default {
     }
 
     const directiveFn = function(el, binding) {
-      const name = binding.value
-      var source = _images[name]
-      if (source != null) {
-        imgFn.set(source, el)
-      } else {
+      var resource = binding.value
+      var source = findImageFn(resource)
+      if (source === false) {
         el.classList.toggle(classLoading, true)
         el.classList.toggle(classLoaded, false)
-        imgFn.load(name, img => {
+        imgFn.load(resource, img => {
           imgFn.set(img, el)
         })
+      } else {
+        imgFn.set(source, el)
       }
     }
 
@@ -74,13 +87,12 @@ export default {
 
     Vue.prototype.$images = {
       preload: function(images, callback) {
-        const l = images.length
-        var n = 0
-        for (var i in images) {
-          const name = images[i]
-          imgFn.load(name, img => {
+        let l = images.length
+        let n = 0
+        for (let i in images) {
+          var resource = images[i]
+          imgFn.load(resource, img => {
             n++
-            _images[name] = img
             if (n >= l) {
               if (callback) {
                 callback()
