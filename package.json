@@ -1,6 +1,6 @@
 {
   "name": "vue-onload",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A lightweight image loader plugin for Vue.js",
   "main": "index.js",
   "scripts": {

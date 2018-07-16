@@ -19,7 +19,8 @@ export default {
 
     const findImageFn = function(src) {
       if (src && _images.length > 0) {
-        for (let _image of _images) {
+        for (let i = 0; i < _images.length; i++) {
+          let _image = _images[i]
           if (_image.src && _image.src === src) {
             return _image
           }
