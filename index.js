@@ -1,7 +1,7 @@
 /**
  * A lightweight image loader plugin for Vue.js
  *
- * @version 0.1.6
+ * @version 0.2.0
  * @author Charlie LEDUC <contact@graphique.io>
  * @license ISC
  * @requires 'vue'
@@ -10,14 +10,8 @@
 export default {
   install: function install(Vue, options) {
     var _images = [];
-    var classLoading = 'loading';
-    var classLoaded = 'loaded';
-    if (options) {
-      if (options.classLoading) classLoading = options.classLoading;
-      if (options.classLoaded) classLoaded = options.classLoaded;
-    }
 
-    var findImageFn = function findImageFn(src) {
+    var findFn = function findFn(src) {
       if (src && _images.length > 0) {
         for (var i = 0; i < _images.length; i++) {
           var _image = _images[i];
@@ -29,20 +23,19 @@ export default {
       return false;
     };
 
-    var imgFn = {
+    var imgObj = {
       load: function load(resource, callback) {
         var _img = new Image();
         _img.onload = function () {
           _img.width = this.width;
           _img.height = this.height;
-          if (findImageFn(_img.src) === false) {
+          if (!findFn(_img.src)) {
             _images.push(_img);
           }
           if (callback) {
             callback(_img);
           }
         };
-        _img.alt = '';
         _img.src = resource;
       },
 
@@ -50,22 +43,21 @@ export default {
         target.src = source.src;
         target.width = source.width;
         target.height = source.height;
-        target.classList.toggle(classLoading, false);
-        target.classList.toggle(classLoaded, true);
+        target.removeAttribute('data-src');
       }
     };
 
     var directiveFn = function directiveFn(el, binding) {
       var resource = binding.value;
-      var source = findImageFn(resource);
-      if (source === false) {
-        el.classList.toggle(classLoading, true);
-        el.classList.toggle(classLoaded, false);
-        imgFn.load(resource, function (img) {
-          imgFn.set(img, el);
+      el.setAttribute('data-src', resource);
+
+      var source = findFn(resource);
+      if (!source) {
+        imgObj.load(resource, function (img) {
+          imgObj.set(img, el);
         });
       } else {
-        imgFn.set(source, el);
+        imgObj.set(source, el);
       }
     };
 
@@ -92,7 +84,7 @@ export default {
         var n = 0;
         for (var i in images) {
           var resource = images[i];
-          imgFn.load(resource, function (img) {
+          imgObj.load(resource, function (img) {
             n++;
             if (n >= l) {
               if (callback) {

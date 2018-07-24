@@ -18,12 +18,6 @@ import OnLoad from 'vue-onload'
 Vue.use(OnLoad)
 ```
 
-You can pass an optional object for default class names
-
-```javascript
-Vue.use(OnLoad, { classLoading: 'img-loading', classLoaded: 'img-loaded' })
-```
-
 Use the instance methods 'this.$images.preload' in your Vue script to preload an array of image sources.
 
 ```javascript
@@ -63,9 +57,22 @@ Which will be transformed once the resource has been loaded into:
 ```
 <template>
   <div>
-    <img alt="My Image" class="img loaded" width="1024" height="768" src="/static/images/my-image-01.jpg">
+    <img alt="My Image" class="img" width="1024" height="768" src="/static/images/my-image-01.jpg">
   </div>
 </template>
+```
+
+A 'data-src' attribute will be added to replace the directive and will be removed once the image is loaded so CSS selector can be used to display smoothly the element like:
+
+```css
+img {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+img[data-src] {
+  opacity: 0;
+}
 ```
 
 ## License
