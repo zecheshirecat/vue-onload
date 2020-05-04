@@ -7,14 +7,14 @@
  * @requires 'vue'
  */
 
+var _loadedImages = []
+
 export default {
   install(Vue, options) {
-    var _images = []
-
     const findFn = function(src) {
-      if (src && _images.length > 0) {
-        for (var i = 0; i < _images.length; i++) {
-          var _image = _images[i]
+      if (src && _loadedImages.length > 0) {
+        for (var i = 0; i < _loadedImages.length; i++) {
+          var _image = _loadedImages[i]
           if (_image.src && _image.src === src) {
             return _image
           }
@@ -30,7 +30,7 @@ export default {
           _img.width = this.width
           _img.height = this.height
           if (!findFn(_img.src)) {
-            _images.push(_img)
+            _loadedImages.push(_img)
           }
           if (callback) {
             callback(_img)
@@ -43,12 +43,27 @@ export default {
         target.src = source.src
         target.width = source.width
         target.height = source.height
+
+        var aspectClass = 'img-square'
+        if (source.width < source.height) {
+          aspectClass = 'img-portrait'
+        } else {
+          if (source.width / source.height >= 10 / 9) {
+            aspectClass = 'img-landscape'
+          }
+        }
+        if (!target.classList.contains(aspectClass)) {
+          target.classList.add(aspectClass)
+        }
+
         target.removeAttribute('data-src')
       }
     }
 
     const directiveFn = function(el, binding) {
       var resource = binding.value
+
+      el.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
       el.setAttribute('data-src', resource)
 
       var source = findFn(resource)
@@ -82,7 +97,7 @@ export default {
       preload: function(images, callback) {
         let l = images.length
         let n = 0
-        for (let i in images) {
+        for (let i = 0; i < images.length; i++) {
           var resource = images[i]
           imgObj.load(resource, img => {
             n++
