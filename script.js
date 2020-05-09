@@ -7,31 +7,14 @@
  * @requires 'vue'
  */
 
-var _loadedImages = []
-
 export default {
   install(Vue, options) {
-    const findFn = function(src) {
-      if (src && _loadedImages.length > 0) {
-        for (var i = 0; i < _loadedImages.length; i++) {
-          var _image = _loadedImages[i]
-          if (_image.src && _image.src === src) {
-            return _image
-          }
-        }
-      }
-      return false
-    }
-
     const imgObj = {
       load: function(resource, callback) {
         var _img = new Image()
         _img.onload = function() {
           _img.width = this.width
           _img.height = this.height
-          if (!findFn(_img.src)) {
-            _loadedImages.push(_img)
-          }
           if (callback) {
             callback(_img)
           }
@@ -63,17 +46,21 @@ export default {
     const directiveFn = function(el, binding) {
       var resource = binding.value
 
-      el.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+      var rparts = resource && resource.length ? resource.split('/') : []
+      var rfname = rparts.length ? rparts[rparts.length - 1] : ''
+
+      var sparts = el.src && el.src.length ? el.src.split('/') : []
+      var sfname = sparts.length ? sparts[sparts.length - 1] : ''
+      if (rfname === sfname) {
+        return
+      }
+
+      el.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
       el.setAttribute('data-src', resource)
 
-      var source = findFn(resource)
-      if (!source) {
-        imgObj.load(resource, img => {
-          imgObj.set(img, el)
-        })
-      } else {
-        imgObj.set(source, el)
-      }
+      imgObj.load(resource, img => {
+        imgObj.set(img, el)
+      })
     }
 
     Vue.directive('onload', {
