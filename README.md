@@ -32,9 +32,13 @@ mounted: function() {
           require('@/assets/images/my-image-02.jpg'),
           ...
         ],
-        () => {
-          // callback when all images are loaded
-          this.preload = true
+        (completed, progress) => {
+          // progress indicator from 0 (no image loaded yet) to 1 (all images loaded)
+          console.log(Math.round(progress * 100))
+          // completed = true when all images are loaded
+          if (completed) {
+            this.preload = true
+          }
         }
       )
     })

@@ -1,10 +1,10 @@
 {
   "name": "vue-onload",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A lightweight image loader plugin for Vue.js",
   "main": "index.js",
   "scripts": {
-    "babel": "npx babel script.js --out-file index.js"
+    "babel": "npx babel main.js --out-file index.js"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -22,7 +22,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ch3sh1r3Cat/vue-onload.git"
+    "url": "https://github.com/zecheshirecat/vue-onload.git"
   },
   "author": "cheshirecat <ca.leduc@me.com>",
   "license": "ISC"
