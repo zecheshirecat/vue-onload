@@ -7,6 +7,13 @@
  * @requires 'vue'
  */
 
+var emit = function emit(vnode, name, data) {
+  var handlers = vnode.data && vnode.data.on || vnode.componentOptions && vnode.componentOptions.listeners;
+  if (handlers && handlers[name]) {
+    handlers[name].fns(data);
+  }
+};
+
 var imgObj = {
   load: function load(resource, callback) {
     var _img = new Image();
@@ -39,7 +46,7 @@ var imgObj = {
   }
 };
 
-var directiveFn = function directiveFn(el, binding) {
+var directiveFn = function directiveFn(el, binding, vnode) {
   var resource = binding.value;
 
   var rparts = resource && resource.length ? resource.split('/') : [];
@@ -56,6 +63,14 @@ var directiveFn = function directiveFn(el, binding) {
 
   imgObj.load(resource, function (img) {
     imgObj.set(img, el);
+    if (vnode) {
+      emit(vnode, 'loaded', {
+        type: 'image',
+        src: img.src,
+        width: img.width,
+        height: img.height
+      });
+    }
   });
 };
 
@@ -67,14 +82,14 @@ export default {
           console.warn('Current node is not an image!');
           return;
         }
-        directiveFn(el, binding);
+        directiveFn(el, binding, vnode);
       },
       update: function update(el, binding, vnode, oldVnode) {
         if (vnode.tag !== 'img') {
           console.warn('Current node is not an image!');
           return;
         }
-        directiveFn(el, binding);
+        directiveFn(el, binding, vnode);
       }
     });
 

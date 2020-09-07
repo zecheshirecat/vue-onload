@@ -79,6 +79,20 @@ img[data-src] {
 }
 ```
 
+Since v0.6, the directive can now emit an optional event when the image is loaded. The $event is a JavaScript object with the following properties:
+- type: 'image'
+- src: <string>
+- width: <number>
+- height: <number>
+
+```
+<template>
+  <div>
+    <img alt="My Image" class="img" v-onload="/static/images/my-image-01.jpg" @loaded="onLoad($event)">
+  </div>
+</template>
+```
+
 ## License
 
 [ISC](https://opensource.org/licenses/ISC)
