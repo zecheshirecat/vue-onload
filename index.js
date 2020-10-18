@@ -1,7 +1,7 @@
 /**
  * A lightweight image loader plugin for Vue.js
  *
- * @version 0.2.0
+ * @version 0.7.0
  * @author Charlie LEDUC <contact@graphique.io>
  * @license ISC
  * @requires 'vue'
@@ -30,6 +30,11 @@ var imgObj = {
     target.width = source.width;
     target.height = source.height;
 
+    var list = ['img-square', 'img-portrait', 'img-landscape'];
+    list.forEach(function (c) {
+      target.classList.remove(c);
+    });
+
     var aspectClass = 'img-square';
     if (source.width < source.height) {
       aspectClass = 'img-portrait';
@@ -48,13 +53,7 @@ var imgObj = {
 
 var directiveFn = function directiveFn(el, binding, vnode) {
   var resource = binding.value;
-
-  var rparts = resource && resource.length ? resource.split('/') : [];
-  var rfname = rparts.length ? rparts[rparts.length - 1] : '';
-
-  var sparts = el.src && el.src.length ? el.src.split('/') : [];
-  var sfname = sparts.length ? sparts[sparts.length - 1] : '';
-  if (rfname === sfname) {
+  if (resource === el.src) {
     return;
   }
 
