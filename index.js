@@ -7,14 +7,7 @@
  * @requires 'vue'
  */
 
-var emit = function emit(vnode, name, data) {
-  var handlers = vnode.data && vnode.data.on || vnode.componentOptions && vnode.componentOptions.listeners;
-  if (handlers && handlers[name]) {
-    handlers[name].fns(data);
-  }
-};
-
-var imgObj = {
+var __imgObj = {
   load: function load(resource, callback) {
     var _img = new Image();
     _img.onload = function () {
@@ -51,7 +44,14 @@ var imgObj = {
   }
 };
 
-var directiveFn = function directiveFn(el, binding, vnode) {
+function __emit(vnode, name, data) {
+  var handlers = vnode.data && vnode.data.on || vnode.componentOptions && vnode.componentOptions.listeners;
+  if (handlers && handlers[name]) {
+    handlers[name].fns(data);
+  }
+}
+
+function __directiveFn(el, binding, vnode) {
   var resource = binding.value;
   if (resource === el.src) {
     return;
@@ -60,10 +60,10 @@ var directiveFn = function directiveFn(el, binding, vnode) {
   el.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
   el.setAttribute('data-src', resource);
 
-  imgObj.load(resource, function (img) {
-    imgObj.set(img, el);
+  __imgObj.load(resource, function (img) {
+    __imgObj.set(img, el);
     if (vnode) {
-      emit(vnode, 'loaded', {
+      __emit(vnode, 'loaded', {
         type: 'image',
         src: img.src,
         width: img.width,
@@ -71,7 +71,7 @@ var directiveFn = function directiveFn(el, binding, vnode) {
       });
     }
   });
-};
+}
 
 export default {
   install: function install(Vue, options) {
@@ -81,14 +81,14 @@ export default {
           console.warn('Current node is not an image!');
           return;
         }
-        directiveFn(el, binding, vnode);
+        __directiveFn(el, binding, vnode);
       },
       update: function update(el, binding, vnode, oldVnode) {
         if (vnode.tag !== 'img') {
           console.warn('Current node is not an image!');
           return;
         }
-        directiveFn(el, binding, vnode);
+        __directiveFn(el, binding, vnode);
       }
     });
 
@@ -100,7 +100,7 @@ export default {
         if (images.length) {
           for (var i = 0; i < images.length; i++) {
             var resource = images[i];
-            imgObj.load(resource, function (img) {
+            __imgObj.load(resource, function (img) {
               n++;
               if (typeof callback === 'function') {
                 callback(completed, n / l);
