@@ -13,36 +13,10 @@ npm install vue-onload --save
 Default use in your main.js Vue project
 
 ```javascript
-import OnLoad from 'vue-onload'
-
-Vue.use(OnLoad)
-```
-
-Use the instance methods 'this.$images.preload' in your Vue script to preload an array of image sources.
-
-```javascript
+import { plugin as OnLoad } from 'vue-onload'
 ...
-mounted: function() {
-    this.preload = false
-    this.$nextTick(function() {
-      this.$images.preload(
-        [
-          '/static/images/my-image-01.jpg',
-          '/static/images/my-image-02.jpg',
-          require('@/assets/images/my-image-02.jpg'),
-          ...
-        ],
-        (completed, progress) => {
-          // progress indicator from 0 (no image loaded yet) to 1 (all images loaded)
-          console.log(Math.round(progress * 100))
-          // completed = true when all images are loaded
-          if (completed) {
-            this.preload = true
-          }
-        }
-      )
-    })
-  }
+createApp(App)
+  .use(OnLoad)
 ...
 ```
 
@@ -79,18 +53,38 @@ img[data-src] {
 }
 ```
 
-Since v0.6, the directive can now emit an optional event when the image is loaded. The $event is a JavaScript object with the following properties:
-- type: 'image'
-- src: <string>
-- width: <number>
-- height: <number>
+## Preload
 
-```
-<template>
-  <div>
-    <img alt="My Image" class="img" v-onload="/static/images/my-image-01.jpg" @loaded="onLoad($event)">
-  </div>
-</template>
+You can import `preload` in your Vue script to preload an array of image sources.
+
+```javascript
+import { ref, onMounted } from 'vue'
+import { preload } from 'vue-onload'
+export default {
+  name: 'MyComponent',
+
+  setup(props, context) {
+    const loaded = ref(false)
+
+    onMounted(() => {
+      loaded.value = false
+      const sources = [
+        'https://www.website.com/static/example1.png',
+        require('@/assets/img/img-1.jpg'),
+        require('@/assets/img/img-2.jpg')
+      ]
+      preload(sources, (completed, count) => {
+        if (completed === true) {
+          loaded.value = true
+        }
+      })
+    })
+
+    return {
+      loaded
+    }
+  }
+}
 ```
 
 ## License
